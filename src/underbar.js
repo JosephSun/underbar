@@ -251,6 +251,7 @@
           obj[key] = value; 
         });
     });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
@@ -271,6 +272,7 @@
 
      }); 
     });
+    return obj;
   };
 
 
@@ -346,8 +348,10 @@
       });
       if (bol) {return result}
       else{
-        checkArg.push(func.apply(this,arguments));
+        var funcResult = func.apply(this,arguments);
+        checkArg.push(funcResult);
         newArr.push(checkArg);
+        return funcResult;    
         }
     };
   };
@@ -358,9 +362,25 @@
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
+//  _.delay = function(func, wait) {
+//    setTimeout(function() {
+//      return func.apply(this,arguments);
+//    }, wait);
+//  };
   _.delay = function(func, wait) {
-  };
+     var result = 0;
+      var argumentsArray = [];
+      _.each(arguments , function(value, index) {
+          if (index > 1) {
+              argumentsArray.push(value);
+          }
+      });
 
+    setTimeout(function() {
+    console.log(func.apply(this,argumentsArray))
+      return (func.apply(this, argumentsArray));
+    }, wait);
+  };
 
   /**
    * ADVANCED COLLECTION OPERATIONS
@@ -374,9 +394,8 @@
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
     var newArr = array.slice(0);
-    _.each(newArr,function(val) {
-      var i = indexOf(newArr,val);
-      var index = newArr.length * Math.random();
+    _.each(newArr,function(val, i) {
+      var index = Math.floor(newArr.length * Math.random());
       var secondValue = newArr[index];
       newArr[index] = val; 
       newArr[i] = secondValue;
