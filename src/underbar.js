@@ -368,7 +368,6 @@
 //    }, wait);
 //  };
   _.delay = function(func, wait) {
-     var result = 0;
       var argumentsArray = [];
       _.each(arguments , function(value, index) {
           if (index > 1) {
@@ -377,11 +376,11 @@
       });
 
     setTimeout(function() {
-    console.log(func.apply(this,argumentsArray))
       return (func.apply(this, argumentsArray));
     }, wait);
   };
 
+  
   /**
    * ADVANCED COLLECTION OPERATIONS
    * ==============================
